@@ -18,7 +18,6 @@ public class KhayyamPascalTriangle
 		}
 	}
 
-
 	private static Integer getZhayam(Integer i, Integer j) {
 		return (i == 1 || i == j) ? 1 : getZhayam(i - 1, j - 1) + getZhayam(i, j - 1);
 	}
