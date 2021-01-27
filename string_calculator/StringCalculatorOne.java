@@ -3,16 +3,9 @@ class StringCalculatorOne {
     public static void main(String... args) {
 
         String str = "(4+6)+(2*3)/(4*(3+2)-3/(2+1))";
-        str = "2/2*4+3*2";
-        //str = "11+0";
-        //str = "((1+2)+(3+4))";
-        //str = "1+2-26-345";
-        //	str = "((1 + 2))";
-        //System.out.println(calc(str, 0, 0, -1));
+
         System.out.println(navigateOnString(str, 0));
-        //System.out.println(getFirstOpenBraceFromPosition(str, 12));
-        //System.out.println(calcSecondPriorityOperations("3+1", 0));
-        //System.out.println(getCountOfDigits(14, 0));
+
     }
 
     public static String navigateOnString(String str, Integer index) {
