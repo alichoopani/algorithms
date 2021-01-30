@@ -2,7 +2,7 @@ class StringCalculatorOne {
 
     public static void main(String... args) {
 
-        String str = "-9";
+        String str = "1-(-215*-2)";
 
         System.out.println(calculate(str));
 
@@ -53,15 +53,19 @@ class StringCalculatorOne {
     }
 
     public static String calcFirstPriorityOperations(String str, Integer index) {
+
         if (index == str.length())
             return str;
         char c = str.charAt(index);
         int result;
+        if (index == 0 && c == '-' || c == '+')
+            return calcFirstPriorityOperations(str, ++index);
         if (c == '*' || c == '/') {
             Integer previousNumber = getPreviousNumberInStringFromPosition(str, index, 1);
             Integer nextNumber = getNextNumberInStringFromPosition(str, index, 1);
             //TODO dividing by 0 !!!
             result = (c == '*') ? previousNumber * nextNumber : previousNumber / nextNumber;
+            System.out.println(previousNumber + " " + c + " " + nextNumber);
             return calcFirstPriorityOperations(
                     str.substring(
                             0,
@@ -84,11 +88,12 @@ class StringCalculatorOne {
             Integer previousNumber = getPreviousNumberInStringFromPosition(str, index, 1);
             Integer nextNumber = getNextNumberInStringFromPosition(str, index, 1);
             result = (c == '+') ? previousNumber + nextNumber : previousNumber - nextNumber;
+            System.out.println(previousNumber + " " + c + " " + nextNumber);
+            System.out.println(getCountOfDigits(nextNumber, 0));
             return calcSecondPriorityOperations(
-                    str.substring(
-                            0,
-                            index - getCountOfDigits(previousNumber, 0)
-                    ) + result + str.substring(index + getCountOfDigits(nextNumber, 0) + 1),
+                    str.substring(0, index - getCountOfDigits(previousNumber, 0))
+                            + result
+                            + str.substring(index + getCountOfDigits(nextNumber, 0) + 1),
                     index - getCountOfDigits(previousNumber, 0));
         } else
             return calcSecondPriorityOperations(str, ++index);
@@ -100,7 +105,7 @@ class StringCalculatorOne {
         if (num / (int) Math.pow(10, index + 1) > 0)
             return getCountOfDigits(num, ++index);
         if (num < 0)
-            return index + 2;
+            return getCountOfDigits(-num * 10, 0);
         return ++index;
     }
 
