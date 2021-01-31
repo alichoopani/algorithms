@@ -1,18 +1,22 @@
 class StringCalculatorOne {
 
-    public static void main(String... args) {
+    public static void main(String... args) throws Exception {
 
-        String str = "1-(-215*-2)";
+        String str = "1-(-215*-2)/(20-(3/4)+2)";
 
-        System.out.println(calculate(str));
+        try {
+            System.out.println(calculate(str));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 
-    public static Integer calculate(String str) {
+    public static Integer calculate(String str) throws Exception {
         return Integer.valueOf(navigateOnString(str, 0));
     }
 
-    public static String navigateOnString(String str, Integer index) {
+    public static String navigateOnString(String str, Integer index) throws Exception {
         System.out.println(str);
         if (index == str.length())
             return calcSecondPriorityOperations(calcFirstPriorityOperations(str, 0), 0);
@@ -28,7 +32,7 @@ class StringCalculatorOne {
         return str.charAt(position) == '(' ? position : getFirstOpenBraceFromPosition(str, --position);
     }
 
-    public static Integer calcStrWithoutBrace(String str, Integer index) {
+    public static Integer calcStrWithoutBrace(String str, Integer index) throws Exception {
         return Integer.valueOf(calcSecondPriorityOperations(calcFirstPriorityOperations(str, 0), 0));
     }
 
@@ -52,8 +56,7 @@ class StringCalculatorOne {
                 : getNextNumberInStringFromPosition(str, position, ++length);
     }
 
-    public static String calcFirstPriorityOperations(String str, Integer index) {
-
+    public static String calcFirstPriorityOperations(String str, Integer index) throws Exception {
         if (index == str.length())
             return str;
         char c = str.charAt(index);
@@ -64,8 +67,9 @@ class StringCalculatorOne {
             Integer previousNumber = getPreviousNumberInStringFromPosition(str, index, 1);
             Integer nextNumber = getNextNumberInStringFromPosition(str, index, 1);
             //TODO dividing by 0 !!!
+            if (nextNumber == 0 && c == '/')
+                throw new Exception("!divided by zero!");
             result = (c == '*') ? previousNumber * nextNumber : previousNumber / nextNumber;
-            System.out.println(previousNumber + " " + c + " " + nextNumber);
             return calcFirstPriorityOperations(
                     str.substring(
                             0,
@@ -88,8 +92,6 @@ class StringCalculatorOne {
             Integer previousNumber = getPreviousNumberInStringFromPosition(str, index, 1);
             Integer nextNumber = getNextNumberInStringFromPosition(str, index, 1);
             result = (c == '+') ? previousNumber + nextNumber : previousNumber - nextNumber;
-            System.out.println(previousNumber + " " + c + " " + nextNumber);
-            System.out.println(getCountOfDigits(nextNumber, 0));
             return calcSecondPriorityOperations(
                     str.substring(0, index - getCountOfDigits(previousNumber, 0))
                             + result
